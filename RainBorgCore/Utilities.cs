@@ -32,10 +32,13 @@ namespace RainBorg
         //  public static JObject RPC(string Host, int Port, string Method, JObject Params = null, string Password = null)
 
         // Get Balance from Service
-	 JObject Result = Request.RPC(daemonHost, daemonPort, "getBalance", new JObject{["address"] = botAddress }, daemonPassword);
-	 if (Result.Count < 1 || Result.ContainsKey("error")) return -1;
+	//JObject Result = Request.RPC(daemonHost, daemonPort, "getBalance", new JObject{["address"] = botAddress }, daemonPassword);
+	// if (Result.Count < 1 || Result.ContainsKey("error")) return -1;
         // Return current supply dividet by CoinUnits
-                return (decimal)Result["availableBalance"] / 10000;
+        //        return (decimal)Result["availableBalance"] / 10000;
+	
+		decimal balance = Wallet.GetBalance();
+		return balance;	
         }
 
 

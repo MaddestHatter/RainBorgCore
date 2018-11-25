@@ -15,6 +15,13 @@
 
             // Load optedout
             OptedOut.Load();
-        }
+	    
+	    //Load Wallet
+	    //Wallet.Load();
+        
+	    //Load Stats
+	    Stats.Load();	
+	
+	}
     }
 }

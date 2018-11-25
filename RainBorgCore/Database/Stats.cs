@@ -44,7 +44,7 @@ namespace RainBorg
                 // Update global stats
                 StatTracker GlobalStats = new StatTracker();
                 SqliteCommand Command = new SqliteCommand("SELECT totaltips, totalamount FROM global", Connection);
-                Command.Parameters.AddWithValue("id", Id);
+                //Command.Parameters.AddWithValue("id", Id);
                 using (SqliteDataReader Reader = Command.ExecuteReader())
                     if (Reader.Read()) GlobalStats = new StatTracker
                     {
@@ -54,7 +54,7 @@ namespace RainBorg
                 GlobalStats.TotalTips++;
                 GlobalStats.TotalAmount += Amount;
                 Command = new SqliteCommand(@"UPDATE global SET totaltips = @totaltips, totalamount = @totalamount", Connection);
-                Command.Parameters.AddWithValue("id", Channel);
+                //Command.Parameters.AddWithValue("id", Channel);
                 Command.Parameters.AddWithValue("totaltips", GlobalStats.TotalTips);
                 Command.Parameters.AddWithValue("totalamount", GlobalStats.TotalAmount);
                 Command.ExecuteNonQuery();
@@ -62,7 +62,7 @@ namespace RainBorg
                 // Update channel stats
                 StatTracker ChannelStats = new StatTracker();
                 Command = new SqliteCommand("SELECT totaltips, totalamount FROM channels WHERE id = @id", Connection);
-                Command.Parameters.AddWithValue("id", Id);
+                Command.Parameters.AddWithValue("id", Channel);
                 using (SqliteDataReader Reader = Command.ExecuteReader())
                     if (Reader.Read()) ChannelStats = new StatTracker
                     {
@@ -80,7 +80,7 @@ namespace RainBorg
 
                 // Update user stats
                 StatTracker UserStats = new StatTracker();
-                Command = new SqliteCommand("SELECT totaltips, totalamount FROM users WHERE id = @id", Connection);
+                Command = new SqliteCommand("SELECT totaltips, totalamount FROM userstats WHERE id = @id", Connection);
                 Command.Parameters.AddWithValue("id", Id);
                 using (SqliteDataReader Reader = Command.ExecuteReader())
                     if (Reader.Read()) UserStats = new StatTracker
@@ -90,7 +90,7 @@ namespace RainBorg
                     };
                 UserStats.TotalTips++;
                 UserStats.TotalAmount += Amount;
-                Command = new SqliteCommand(@"INSERT OR REPLACE INTO users (id, totaltips, totalamount) values (@id, @totaltips, @totalamount)",
+                Command = new SqliteCommand(@"INSERT OR REPLACE INTO userstats (id, totaltips, totalamount) values (@id, @totaltips, @totalamount)",
                     Connection);
                 Command.Parameters.AddWithValue("id", Id);
                 Command.Parameters.AddWithValue("totaltips", UserStats.TotalTips);
@@ -98,7 +98,7 @@ namespace RainBorg
                 Command.ExecuteNonQuery();
 
                 // Add tip to database
-                Command = new SqliteCommand(@"INSERT INTO tips (user, channel, date, amount) values (@user, @channel, @date, @amount)", Connection);
+                Command = new SqliteCommand(@"INSERT INTO tipstats (userid, channelid, date, amount) values (@user, @channel, @date, @amount)", Connection);
                 Command.Parameters.AddWithValue("user", Id);
                 Command.Parameters.AddWithValue("channel", Channel);
                 Command.Parameters.AddWithValue("date", Date);
@@ -119,7 +119,7 @@ namespace RainBorg
                 Connection.Open();
                 SqliteCommand GlobalStatsTable = new SqliteCommand(@"
                     CREATE TABLE IF NOT EXISTS global (
-                        totaltips INTEGER DEFAULT 0,
+			totaltips INTEGER DEFAULT 0,
                         totalamount BIGINT DEFAULT 0
                     )
                 ", Connection);
@@ -131,9 +131,10 @@ namespace RainBorg
                         totalamount BIGINT DEFAULT 0
                     )
                 ", Connection);
-                ChannelStatsTable.ExecuteNonQuery();
+                ChannelStatsTable.ExecuteNonQuery(); 
+		// does not WORK !! needs to be update users , changed to userstats?
                 SqliteCommand UserStatsTable = new SqliteCommand(@"
-                    CREATE TABLE IF NOT EXISTS users (
+                    CREATE TABLE IF NOT EXISTS userstats (
                         id INTEGER UNIQUE,
                         totaltips INTEGER DEFAULT 0,
                         totalamount BIGINT DEFAULT 0
@@ -141,9 +142,9 @@ namespace RainBorg
                 ", Connection);
                 UserStatsTable.ExecuteNonQuery();
                 SqliteCommand TipsTable = new SqliteCommand(@"
-                    CREATE TABLE IF NOT EXISTS tips (
-                        user INTEGER,
-                        channel INTEGER,
+                    CREATE TABLE IF NOT EXISTS tipstats (
+                        userid INTEGER,
+                        channelid INTEGER,
                         date TIMESTAMP,
                         amount INTEGER DEFAULT 0
                     )
@@ -176,7 +177,7 @@ namespace RainBorg
             using (SqliteConnection Connection = new SqliteConnection("Data Source=" + RainBorg.databaseFile))
             {
                 Connection.Open();
-                SqliteCommand Command = new SqliteCommand("SELECT totaltips, totalamount FROM users WHERE id = @id", Connection);
+                SqliteCommand Command = new SqliteCommand("SELECT totaltips, totalamount FROM userstats WHERE id = @id", Connection);
                 Command.Parameters.AddWithValue("id", Id);
                 using (SqliteDataReader Reader = Command.ExecuteReader())
                     if (Reader.Read()) return new StatTracker
