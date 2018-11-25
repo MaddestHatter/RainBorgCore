@@ -129,7 +129,7 @@ namespace RainBorg
         private delegate bool ConsoleEventDelegate(int eventType);
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool SetConsoleCtrlHandler(ConsoleEventDelegate callback, bool add);
-        private const ulong DID = 408364361598369802;
+        private const ulong DID = 507573253208801281; // Test
     }
 
     // Utility class for serialization of message log on restart
