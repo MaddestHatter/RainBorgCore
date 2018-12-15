@@ -18,14 +18,14 @@ namespace RainBorg.Commands
                 {
                     if (!RainBorg.UserPools.ContainsKey(Id) && Weight > 0)
                     {
-                        RainBorg.UserPools.Add(Id, new List<ulong>());
+                        RainBorg.UserPools.Add(Id, new RainBorg.LimitedList<ulong>());
                         for (int i = 0; i < Weight; i++) RainBorg.ChannelWeight.Add(Id);
                         await Config.Save();
                         if (RainBorg.entranceMessage != "")
                             await (Context.Client.GetChannel(Id) as SocketTextChannel).SendMessageAsync(RainBorg.entranceMessage);
                         try
                         {
-                            RainBorg.Log("Command", "{0} added to channel list with a weight of {1} by {2}", Id, Weight, Context.User.Username);
+                            RainBorg.Log(2, "Command", "{0} added to channel list with a weight of {1} by {2}", Id, Weight, Context.User.Username);
 
                             // Add reaction to message
                             IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
@@ -50,14 +50,14 @@ namespace RainBorg.Commands
                 {
                     if (!RainBorg.UserPools.ContainsKey(Channel.Id) && Weight > 0)
                     {
-                        RainBorg.UserPools.Add(Channel.Id, new List<ulong>());
+                        RainBorg.UserPools.Add(Channel.Id, new RainBorg.LimitedList<ulong>());
                         for (int i = 0; i < Weight; i++) RainBorg.ChannelWeight.Add(Channel.Id);
                         await Config.Save();
                         if (RainBorg.entranceMessage != "")
                             await (Context.Client.GetChannel(Channel.Id) as SocketTextChannel).SendMessageAsync(RainBorg.entranceMessage);
                         try
                         {
-                            RainBorg.Log("Command", "{0} added to channel list with a weight of {1} by {2}", Channel.Id, Weight, Context.User.Username);
+                            RainBorg.Log(2, "Command", "{0} added to channel list with a weight of {1} by {2}", Channel.Id, Weight, Context.User.Username);
 
                             // Add reaction to message
                             IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
@@ -91,7 +91,7 @@ namespace RainBorg.Commands
                 await Config.Save();
                 try
                 {
-                    RainBorg.Log("Command", "Channels removed by {0}", Context.User.Username);
+                    RainBorg.Log(2, "Command", "Channels removed by {0}", Context.User.Username);
 
                     // Add reaction to message
                     IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
@@ -118,7 +118,7 @@ namespace RainBorg.Commands
                 await Config.Save();
                 try
                 {
-                    RainBorg.Log("Command", "Channels removed by {0}", Context.User.Username);
+                    RainBorg.Log(2, "Command", "Channels removed by {0}", Context.User.Username);
 
                     // Add reaction to message
                     IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
@@ -142,7 +142,7 @@ namespace RainBorg.Commands
                 await Config.Save();
                 try
                 {
-                    RainBorg.Log("Command", "Status channel added by {0}", Context.User.Username);
+                    RainBorg.Log(2, "Command", "Status channel added by {0}", Context.User.Username);
 
                     // Add reaction to message
                     IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
@@ -170,7 +170,7 @@ namespace RainBorg.Commands
                 await Config.Save();
                 try
                 {
-                    RainBorg.Log("Command", "Status channel added by {0}", Context.User.Username);
+                    RainBorg.Log(2, "Command", "Status channel added by {0}", Context.User.Username);
 
                     // Add reaction to message
                     IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
@@ -198,7 +198,7 @@ namespace RainBorg.Commands
                 await Config.Save();
                 try
                 {
-                    RainBorg.Log("Command", "Status channel removed by {0}", Context.User.Username);
+                    RainBorg.Log(2, "Command", "Status channel removed by {0}", Context.User.Username);
 
                     // Add reaction to message
                     IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
@@ -222,7 +222,7 @@ namespace RainBorg.Commands
                 await Config.Save();
                 try
                 {
-                    RainBorg.Log("Command", "Status channel removed by {0}", Context.User.Username);
+                    RainBorg.Log(2, "Command", "Status channel removed by {0}", Context.User.Username);
 
                     // Add reaction to message
                     IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
@@ -244,7 +244,7 @@ namespace RainBorg.Commands
                     if (!Operators.ContainsKey(user.Id))
                     {
                         Operators.Add(user.Id);
-                        RainBorg.Log("Command", "{0} added as an operator by {1}", user.Id, Context.User.Username);
+                        RainBorg.Log(2, "Command", "{0} added as an operator by {1}", user.Id, Context.User.Username);
                     }
                 await Config.Save();
                 try
@@ -271,7 +271,7 @@ namespace RainBorg.Commands
                         if (!Operators.ContainsKey(Context.Client.GetUser(user).Id))
                         {
                             Operators.Add(Context.Client.GetUser(user).Id);
-                            RainBorg.Log("Command", "{0} added as an operator by {1}", user, Context.User.Username);
+                            RainBorg.Log(2, "Command", "{0} added as an operator by {1}", user, Context.User.Username);
                         }
                     }
                     catch { }
@@ -298,7 +298,7 @@ namespace RainBorg.Commands
                     if (Operators.ContainsKey(user.Id))
                     {
                         Operators.Remove(user.Id);
-                        RainBorg.Log("Command", "{0} removed as an operator by {1}", user.Id, Context.User.Username);
+                        RainBorg.Log(2, "Command", "{0} removed as an operator by {1}", user.Id, Context.User.Username);
                     }
                 await Config.Save();
                 try
@@ -325,7 +325,7 @@ namespace RainBorg.Commands
                         if (Operators.ContainsKey(Context.Client.GetUser(user).Id))
                         {
                             Operators.Remove(Context.Client.GetUser(user).Id);
-                            RainBorg.Log("Command", "{0} removed as an operator by {1}", user, Context.User.Username);
+                            RainBorg.Log(2, "Command", "{0} removed as an operator by {1}", user, Context.User.Username);
                         }
                     }
                     catch { }

@@ -40,14 +40,15 @@ namespace RainBorg.Commands
             string m = "```List of Commands:\n";
             m += $"{RainBorg.botPrefix}balance - Check the bot's tip balance\n";
             m += $"{RainBorg.botPrefix}donate - Learn how you can donate to the tip pool\n";
-            m += $"{RainBorg.botPrefix}optout - Opt out of receiving tips from the bot\n";
+            m += $"\t Donate to (T)Rainmans TipYar easy, by tipping the Bot with $tip \n";
+	    m += $"{RainBorg.botPrefix}optout - Opt out of receiving tips from the bot\n";
             m += $"{RainBorg.botPrefix}optin - Opt back into receiving tips from the bot```";
             if (Operators.ContainsKey(Context.Message.Author.Id))
             {
                 m += "Op-only message:\nOperator-only command documentation can be found at:\n";
-                m += "https://github.com/BrandonT42/RainBorg/wiki/Operator-Commands\n";
+                m += "https://github.com/MaddestHatter/RainBorgCore/wiki/Operator-Commands\n";
             }
-            m += "Need more help? Check the wiki link below to learn how to be a part of the rain:\n" + RainBorg.wikiURL;
+            //m += "Need more help? Check the wiki link below to learn how to be a part of the rain:\n" + RainBorg.wikiURL;
             await Context.Message.Author.SendMessageAsync(m);
         }
 

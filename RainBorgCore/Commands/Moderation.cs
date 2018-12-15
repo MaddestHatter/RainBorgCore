@@ -22,7 +22,7 @@ namespace RainBorg.Commands
                 await ReplyAsync("Blacklisted user, they will receive no tips.");
                 try
                 {
-                    RainBorg.Log("Command", "{0} was blacklisted by {1} with reason being: {2}", user.Id, Context.User.Username, Remainder);
+                    RainBorg.Log(2, "Command", "{0} was blacklisted by {1} with reason being: {2}", user.Id, Context.User.Username, Remainder);
 
                     IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
                     await Context.Message.AddReactionAsync(emote);
@@ -52,7 +52,7 @@ namespace RainBorg.Commands
                 await ReplyAsync("Blacklisted users, they will receive no tips.");
                 try
                 {
-                    RainBorg.Log("Command", "{0} was blacklisted by {1} with reason being: {2}", user, Context.User.Username, Remainder);
+                    RainBorg.Log(2, "Command", "{0} was blacklisted by {1} with reason being: {2}", user, Context.User.Username, Remainder);
 
                     IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
                     await Context.Message.AddReactionAsync(emote);
@@ -75,7 +75,7 @@ namespace RainBorg.Commands
                 await ReplyAsync("Removed users from blacklist, they may receive tips again.");
                 try
                 {
-                    RainBorg.Log("Command", "{0} was removed from the blacklist by {1}", user.Id, Context.User.Username);
+                    RainBorg.Log(2, "Command", "{0} was removed from the blacklist by {1}", user.Id, Context.User.Username);
 
                     IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
                     await Context.Message.AddReactionAsync(emote);
@@ -102,7 +102,7 @@ namespace RainBorg.Commands
                 await ReplyAsync("Removed users from blacklist, they may receive tips again.");
                 try
                 {
-                    RainBorg.Log("Command", "{0} was removed from the blacklist by {1}", user, Context.User.Username);
+                    RainBorg.Log(2, "Command", "{0} was removed from the blacklist by {1}", user, Context.User.Username);
 
                     IEmote emote = Context.Guild.Emotes.First(e => e.Name == RainBorg.successReact);
                     await Context.Message.AddReactionAsync(emote);
@@ -130,7 +130,7 @@ namespace RainBorg.Commands
                         RainBorg.Greylist.Add(user.Id);
                         await RainBorg.RemoveUserAsync(user, 0);
 
-                        RainBorg.Log("Command", "{0} was sent a spam warning by {1}", user.Id, Context.User.Username);
+                        RainBorg.Log(2, "Command", "{0} was sent a spam warning by {1}", user.Id, Context.User.Username);
 
                         await user.SendMessageAsync("", false, builder);
                     }
@@ -165,7 +165,7 @@ namespace RainBorg.Commands
                             RainBorg.Greylist.Add(user);
                             await RainBorg.RemoveUserAsync(Context.Client.GetUser(user), 0);
 
-                            RainBorg.Log("Command", "{0} was sent a spam warning by {1}", user, Context.User.Username);
+                            RainBorg.Log(2, "Command", "{0} was sent a spam warning by {1}", user, Context.User.Username);
 
                             await Context.Client.GetUser(user).SendMessageAsync("", false, builder);
                         }

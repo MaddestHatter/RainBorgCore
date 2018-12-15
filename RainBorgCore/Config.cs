@@ -17,13 +17,17 @@ namespace RainBorg
                 RainBorg.currencyName = (string)Config["currencyName"];
                 RainBorg.decimalPlaces = (int)Config["decimalPlaces"];
                 RainBorg.databaseFile = (string)Config["databaseFile"];
-                //RainBorg.balanceUrl = (string)Config["balanceUrl"];
+                RainBorg.databaseFileTipBot = (string)Config["databaseFileTipBot"]; 
+		RainBorg.localTipBot = (bool)Config["localTipBot"];	
+		RainBorg.tipBotId = (ulong)Config["tipBotId"];	
+		//RainBorg.balanceUrl = (string)Config["balanceUrl"];
                 RainBorg.daemonHost = (string)Config["daemonHost"];
 	        RainBorg.daemonPort = (int)Config["daemonPort"];
 	        RainBorg.daemonPassword  = (string)Config["daemonPassword"];
 		RainBorg.botAddress = (string)Config["botAddress"];
                 RainBorg.botPaymentId = (string)Config["botPaymentId"];
-                RainBorg.successReact = (string)Config["successReact"];
+		RainBorg.entranceMessage = (string)Config["entranceMessage"]; 
+		RainBorg.successReact = (string)Config["successReact"];
                 RainBorg.tipFee = (decimal)Config["tipFee"];
                 RainBorg.tipMin = (decimal)Config["tipMin"];
                 RainBorg.tipMax = (decimal)Config["tipMax"];
@@ -52,8 +56,10 @@ namespace RainBorg
                 RainBorg.donationImages = Config["donationImages"].ToObject<List<string>>();
                 foreach (ulong Id in RainBorg.ChannelWeight)
                     if (!RainBorg.UserPools.ContainsKey(Id))
-                        RainBorg.UserPools.Add(Id, new List<ulong>());
-            }
+		    {
+			    RainBorg.UserPools.Add(Id, new RainBorg.LimitedList<ulong>());
+		    }
+	    }
             else await Save();
         }
 
@@ -65,13 +71,17 @@ namespace RainBorg
                 ["currencyName"] = RainBorg.currencyName,
                 ["decimalPlaces"] = RainBorg.decimalPlaces,
                 ["databaseFile"] = RainBorg.databaseFile,
-                //["balanceUrl"] = RainBorg.balanceUrl,
+                ["databaseFileTipBot"] = RainBorg.databaseFileTipBot, 
+	 	["localTipBot"] =  RainBorg.localTipBot,
+                ["tipBotId"] = RainBorg.tipBotId,	
+		//["balanceUrl"] = RainBorg.balanceUrl,
                 ["daemonHost"] = RainBorg.daemonHost,
 	        ["daemonPort"] = RainBorg.daemonPort,
 		["daemonPassword"] = RainBorg.daemonPassword, 
 		["botAddress"] = RainBorg.botAddress,
                 ["botPaymentId"] = RainBorg.botPaymentId,
-                ["successReact"] = RainBorg.successReact,
+                ["entranceMessage"] = RainBorg.entranceMessage, 
+		["successReact"] = RainBorg.successReact,
                 ["tipFee"] = RainBorg.tipFee,
                 ["tipMin"] = RainBorg.tipMin,
                 ["tipMax"] = RainBorg.tipMax,

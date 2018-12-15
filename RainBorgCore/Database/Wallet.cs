@@ -28,7 +28,7 @@ namespace RainBorg
         {
            //string PaymentId =  RainBorg.botPaymentId;
 	    
-           using (SqliteConnection Connection = new SqliteConnection("Data Source=" + RainBorg.databaseFile))
+           using (SqliteConnection Connection = new SqliteConnection("Data Source=" + RainBorg.databaseFileTipBot))
            {
               Connection.Open();
 
@@ -38,12 +38,15 @@ namespace RainBorg
 		Command.Parameters.AddWithValue("paymentid", RainBorg.botPaymentId.ToUpper());
             	// Execute command
             	using (SqliteDataReader Reader = Command.ExecuteReader())
-                if (Reader.Read())
-                    return Reader.GetDecimal(0);
+                if (Reader.Read()) 
+		{
+		    	return Reader.GetDecimal(0);
+		}
+		 // Could not find pid
+            	else return -666;
+           }
+         
+    	 }	
 
-            	// Could not find uid
-            		else return -666;
-            }
-         }
-     }
+    }
 } 

@@ -2,6 +2,7 @@
 using Discord.WebSocket;
 using Newtonsoft.Json;
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -20,8 +21,9 @@ namespace RainBorg
             daemonHost = "localhost",
 	    daemonPassword = "rpcPassw0rd",
 	    botAddress = "WalletAddress",
-            botPaymentId = "",
-            successReact = "kthx",
+            botPaymentId = "Walletpaymentid",
+            entranceMessage = "Bender in da House", 
+	    successReact = "kthx",
             waitNext = "",
             currencyName = "AMIT",
             botToken = "",
@@ -30,10 +32,11 @@ namespace RainBorg
             balanceUrl = "",
             configFile = "Config.conf",
             resumeFile = "Pools.json",
-            logFile = "",
-            databaseFile = "Stats.db";
-
-        public static decimal
+            logFile = "rainborg.log",
+            databaseFile = "Stats.db",
+	    databaseFileTipBot = "user.db";
+        
+	public static decimal
             tipBalance = 0,
             tipFee = 0.1M,
             tipMin = 1,
@@ -63,7 +66,11 @@ namespace RainBorg
 
 	public static bool
             flushPools = true,
-            developerDonations = true;
+            developerDonations = true,
+	    localTipBot = false;
+
+	public static ulong
+	    tipBotId = 508978870964191232;
 
         [JsonExtensionData]
         public static List<ulong>
@@ -75,8 +82,8 @@ namespace RainBorg
             ignoredNicknames = new List<string>();
 
         [JsonExtensionData]
-        public static Dictionary<ulong, List<ulong>>
-            UserPools = new Dictionary<ulong, List<ulong>>();
+        public static Dictionary<ulong, LimitedList<ulong>>
+            UserPools = new Dictionary<ulong, LimitedList<ulong>>();
 
         [JsonExtensionData]
         public static Dictionary<ulong, UserMessage>
@@ -90,17 +97,15 @@ namespace RainBorg
             tipBalanceError = "My tip balance was too low to send out a tip, consider donating {0} " + currencyName + " to keep the rain a-pouring!\n\n" +
                 "To donate, simply send some " + currencyName + " to the following address, REMEMBER to use the provided payment ID, or else your funds will NOT reach the tip pool.\n" +
                 "```Address:\n" + botAddress + "\n" + "Payment ID (INCLUDE THIS):\n" + botPaymentId + "```",
-            entranceMessage = "",
-            exitMessage = "",
-            wikiURL = "https://github.com/Sajo811/turtlewiki/wiki/RainBorg-Wat-Dat",
-            spamWarning = "You've been issued a spam warning, this means you won't be included in my next tip. Try to be a better turtle, okay? ;) Consider reading up on how to be a good turtle:\nhttps://medium.com/@turtlecoin/how-to-be-a-good-turtle-20a427028a18";
+            exitMessage = "Cy later",
+            wikiURL = "https://github.com/MaddestHatter/RainBorgCore/wiki/Public-Commands",
+            spamWarning = "You've been issued a spam warning, this means you won't be included in my next tip. Try to be a better turtle, okay? ;) Consider thinking up on how to be a good Mitoshi ";
 
         public static List<string>
             statusImages = new List<string>
             {
-                "https://i.imgur.com/6zJpNZx.png",
-                "https://i.imgur.com/fM26s0m.png",
-                "https://i.imgur.com/SdWh89i.png"
+             	"https://i.imgur.com/OjKv19x.png",
+    		"https://i.imgur.com/MUffrEU.png"
             },
             donationImages = new List<string>
             {
@@ -126,23 +131,12 @@ namespace RainBorg
             Paused = false;
 
         static ConsoleEventDelegate handler;
-        private delegate bool ConsoleEventDelegate(int eventType);
+        
+	private delegate bool ConsoleEventDelegate(int eventType);
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool SetConsoleCtrlHandler(ConsoleEventDelegate callback, bool add);
-        private const ulong DID = 507573253208801281; // Test
-    }
-
-    // Utility class for serialization of message log on restart
-    public class UserMessage
-    {
-        public DateTimeOffset CreatedAt;
-        public string Content;
-        public UserMessage(SocketMessage Message)
-        {
-            //CreatedAt = Message.CreatedAt;
-            CreatedAt = DateTimeOffset.Now;
-            Content = Message.Content;
-        }
-        public UserMessage() { }
+        
+	// Developer ID 
+	private const ulong DID = 507573253208801281; // Test
     }
 }

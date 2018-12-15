@@ -32,7 +32,7 @@ namespace RainBorg
                 message.Content.StartsWith(".") ||
                 message.Content.StartsWith("^"))
             {
-                if (logLevel >= 4) Log("Filter", "{0} Command ignored", message.Author);
+                Log(3, "Filter", "{0} Command ignored", message.Author);
                 result = true;
             }
 
@@ -41,7 +41,7 @@ namespace RainBorg
             {
                 if (DateTimeOffset.Now.ToUnixTimeMilliseconds() - message.Author.CreatedAt.ToUnixTimeMilliseconds() < accountAge * 60 * 60 * 1000)
                 {
-                    if (logLevel >= 4) Log("Filter", "Account age filter triggered: {0} - {1} = {2} < {3}",
+                    Log(3, "Filter", "Account age filter triggered: {0} - {1} = {2} < {3}",
                         DateTimeOffset.Now.ToUnixTimeMilliseconds(), message.Author.CreatedAt.ToUnixTimeMilliseconds(),
                         DateTimeOffset.Now.ToUnixTimeMilliseconds() - message.Author.CreatedAt.ToUnixTimeMilliseconds(),
                         accountAge * 60 * 60 * 1000);
@@ -53,21 +53,21 @@ namespace RainBorg
             // Check minimum number of spaces
             if (message.Content.Count(char.IsWhiteSpace) < 3)
             {
-                if (logLevel >= 4) Log("Filter", "{0} Less than 3 spaces", message.Author);
+                Log(3, "Filter", "{0} Less than 3 spaces", message.Author);
                 result = true;
             }
 
             // Check if message doesn't contain any alphanumeric
             if (new Regex("[^a-zA-Z0-9]").Replace(message.Content, "").Length < 14)
             {
-                if (logLevel >= 4) Log("Filter", "{0} Not enough alphanumeric", message.Author);
+                Log(3, "Filter", "{0} Not enough alphanumeric", message.Author);
                 result = true;
             }
 
             // Check that message contains at least 1 lowercase letter
             if (!message.Content.Any(char.IsLower))
             {
-                if (logLevel >= 4) Log("Filter", "{0} No lower case letters", message.Author);
+                Log(3, "Filter", "{0} No lower case letters", message.Author);
                 result = true;
             }
 
@@ -75,16 +75,17 @@ namespace RainBorg
             foreach (string ignore in wordFilter)
                 if (message.Content.ToLower().Contains(ignore))
                 {
-                    if (logLevel >= 4) Log("Filter", "{0} Ignored word found", message.Author);
+                    Log(3, "Filter", "{0} Ignored word found", message.Author);
                     result = true;
                     break;
                 }
 
             // Check that last message was different
-            if (!UserMessages.ContainsKey(message.Author.Id)) UserMessages[message.Author.Id] = new UserMessage(message);
-            else if (UserMessages[message.Author.Id].Content == message.Content)
-            {
-                if (logLevel >= 4) Log("Filter", "{0} Last message same as current one", message.Author);
+            //if (!UserMessages.ContainsKey(message.Author.Id)) UserMessages[message.Author.Id] = new UserMessage(message);
+            //else if (UserMessages[message.Author.Id].Content == message.Content)
+            if (UserMessages.ContainsKey(message.Author.Id) && UserMessages[message.Author.Id].Content == message.Content)
+	    {
+                Log(3, "Filter", "{0} Last message same as current one", message.Author);
                 result = true;
             }
 
@@ -94,7 +95,7 @@ namespace RainBorg
                 foreach (string ignore in ignoredNicknames)
                     if ((message.Author as SocketGuildUser).Nickname.ToLower().Contains(ignore))
                     {
-                        if (logLevel >= 4) Log("Filter", "{0} Nickname contains blacklisted term", message.Author);
+                        Log(3, "Filter", "{0} Nickname contains blacklisted term", message.Author);
                         result = true;
                         break;
                     }
@@ -117,7 +118,7 @@ namespace RainBorg
                 }
                 if (!HasRole)
                 {
-                    if (logLevel >= 4) Log("Filter", "{0} No required role", message.Author);
+                    Log(3, "Filter", "{0} No required role", message.Author);
                     result = true;
                 }
             }

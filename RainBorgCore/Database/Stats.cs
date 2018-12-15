@@ -40,37 +40,21 @@ namespace RainBorg
             {
                 // Open connection to database
                 Connection.Open();
-
-                // Update global stats
-                StatTracker GlobalStats = new StatTracker();
-                SqliteCommand Command = new SqliteCommand("SELECT totaltips, totalamount FROM global", Connection);
-                //Command.Parameters.AddWithValue("id", Id);
-                using (SqliteDataReader Reader = Command.ExecuteReader())
-                    if (Reader.Read()) GlobalStats = new StatTracker
-                    {
-                        TotalTips = Reader.GetInt32(0),
-                        TotalAmount = Reader.GetDecimal(1)
-                    };
-                GlobalStats.TotalTips++;
-                GlobalStats.TotalAmount += Amount;
-                Command = new SqliteCommand(@"UPDATE global SET totaltips = @totaltips, totalamount = @totalamount", Connection);
-                //Command.Parameters.AddWithValue("id", Channel);
-                Command.Parameters.AddWithValue("totaltips", GlobalStats.TotalTips);
-                Command.Parameters.AddWithValue("totalamount", GlobalStats.TotalAmount);
-                Command.ExecuteNonQuery();
-
-                // Update channel stats
-                StatTracker ChannelStats = new StatTracker();
-                Command = new SqliteCommand("SELECT totaltips, totalamount FROM channels WHERE id = @id", Connection);
+	 	// Init empty SqliteCommand Object first	
+		SqliteCommand Command = new SqliteCommand();
+                
+		// Update channel stats
+                StatTracker ChannelStats = new StatTracker(); // init new StatTracker Obj.
+		Command = new SqliteCommand("SELECT totaltips, totalamount FROM channels WHERE id = @id", Connection);
                 Command.Parameters.AddWithValue("id", Channel);
                 using (SqliteDataReader Reader = Command.ExecuteReader())
                     if (Reader.Read()) ChannelStats = new StatTracker
                     {
-                        TotalTips = Reader.GetInt32(0),
-                        TotalAmount = Reader.GetDecimal(1)
+                        TotalTips = Reader.GetInt32(0), 		// field 0 
+                        TotalAmount = Reader.GetDecimal(1)		// field 1
                     };
-                ChannelStats.TotalTips++;
-                ChannelStats.TotalAmount += Amount;
+                ChannelStats.TotalTips++;				// increment TotalTips
+                ChannelStats.TotalAmount += Amount;			// add Amount
                 Command = new SqliteCommand(@"INSERT OR REPLACE INTO channels (id, totaltips, totalamount) values (@id, @totaltips, @totalamount)", 
                     Connection);
                 Command.Parameters.AddWithValue("id", Channel);
@@ -117,14 +101,9 @@ namespace RainBorg
             using (SqliteConnection Connection = new SqliteConnection("Data Source=" + RainBorg.databaseFile))
             {
                 Connection.Open();
-                SqliteCommand GlobalStatsTable = new SqliteCommand(@"
-                    CREATE TABLE IF NOT EXISTS global (
-			totaltips INTEGER DEFAULT 0,
-                        totalamount BIGINT DEFAULT 0
-                    )
-                ", Connection);
-                GlobalStatsTable.ExecuteNonQuery();
-                SqliteCommand ChannelStatsTable = new SqliteCommand(@"
+                
+		// Creates Channels Stats Table	
+		SqliteCommand ChannelStatsTable = new SqliteCommand(@"
                     CREATE TABLE IF NOT EXISTS channels (
                         id INTEGER UNIQUE,
                         totaltips INTEGER DEFAULT 0,
@@ -132,8 +111,9 @@ namespace RainBorg
                     )
                 ", Connection);
                 ChannelStatsTable.ExecuteNonQuery(); 
-		// does not WORK !! needs to be update users , changed to userstats?
-                SqliteCommand UserStatsTable = new SqliteCommand(@"
+		
+                // Create User Stats Table  
+		SqliteCommand UserStatsTable = new SqliteCommand(@"
                     CREATE TABLE IF NOT EXISTS userstats (
                         id INTEGER UNIQUE,
                         totaltips INTEGER DEFAULT 0,
@@ -141,7 +121,9 @@ namespace RainBorg
                     )
                 ", Connection);
                 UserStatsTable.ExecuteNonQuery();
-                SqliteCommand TipsTable = new SqliteCommand(@"
+                
+		// Create Tip Stats Table
+		SqliteCommand TipsTable = new SqliteCommand(@"
                     CREATE TABLE IF NOT EXISTS tipstats (
                         userid INTEGER,
                         channelid INTEGER,
@@ -193,13 +175,14 @@ namespace RainBorg
             using (SqliteConnection Connection = new SqliteConnection("Data Source=" + RainBorg.databaseFile))
             {
                 Connection.Open();
-                SqliteCommand Command = new SqliteCommand("SELECT totaltips, totalamount FROM global", Connection);
+                // select sum of values from DB table userstats to get gloabalstats
+		SqliteCommand Command = new SqliteCommand("SELECT sum(totaltips),sum(totalamount) FROM userstats", Connection);
                 using (SqliteDataReader Reader = Command.ExecuteReader())
                     if (Reader.Read()) return new StatTracker
                     {
                         TotalTips = Reader.GetInt32(0),
                         TotalAmount = Reader.GetDecimal(1)
-                    };
+                    }; 
                     else return null;
             }
         }

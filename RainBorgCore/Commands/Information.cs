@@ -39,8 +39,9 @@ namespace RainBorg.Commands
                     "Blacklisted: " + Blacklist.Count + "\n" +
                     "Greylisted: " + RainBorg.Greylist.Count + "\n" +
                     "Channels: " + RainBorg.UserPools.Keys.Count + "\n" +
-                    "Paused: " + RainBorg.Paused.ToString() +
-                    "```";
+                    "Paused: " + RainBorg.Paused.ToString() + "\n" +
+                    "TipBotOnline ?: " + RainBorg.IsTipBotOnline() +
+		    "```";
                 await Context.Message.Author.SendMessageAsync(m);
             }
         }
@@ -146,7 +147,7 @@ namespace RainBorg.Commands
             if (Operators.ContainsKey(Context.Message.Author.Id))
             {
                 string m = "```Current User Pools:\n";
-                foreach (KeyValuePair<ulong, List<ulong>> entry in RainBorg.UserPools)
+                foreach (KeyValuePair<ulong, RainBorg.LimitedList<ulong>> entry in RainBorg.UserPools)
                     try
                     {
                         m += "#" + Context.Client.GetChannel(entry.Key) + " (" + entry.Key + ") :\n";
@@ -167,7 +168,7 @@ namespace RainBorg.Commands
             if (Operators.ContainsKey(Context.Message.Author.Id))
             {
                 string m = "```Tippable Channels:\n";
-                foreach (KeyValuePair<ulong, List<ulong>> entry in RainBorg.UserPools)
+                foreach (KeyValuePair<ulong, RainBorg.LimitedList<ulong>> entry in RainBorg.UserPools)
                     try
                     {
                         m += "#" + Context.Client.GetChannel(entry.Key) + ", weight of ";
@@ -191,7 +192,7 @@ namespace RainBorg.Commands
             {
                 string m = "```";
                 StatTracker Stat = null;
-                Console.WriteLine(Id);
+                Console.WriteLine(Id);  // Removed in Developerversion .... 
 
                 // Channel stats
                 if ((Stat = Stats.GetChannelStats(Id)) != null)

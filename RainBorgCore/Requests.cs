@@ -52,7 +52,7 @@ namespace RainBorg
             }
             catch (Exception e)
             {
-                RainBorg.Log("2", "Rainborg", "Failed while sending request to host {0}: {1}", Host, e.Message);
+                RainBorg.Log(2, "Rainborg", "Failed while sending request to host {0}: {1}", Host, e.Message);
             }
             return Result;
         }
@@ -72,7 +72,7 @@ namespace RainBorg
             }
             catch
             {
-                RainBorg.Log("2", "Rainborg", "Failed while fetching data from host {0}", Host);
+                RainBorg.Log(2, "Rainborg", "Failed while fetching data from host {0}", Host);
             }
             return Result;
         }
