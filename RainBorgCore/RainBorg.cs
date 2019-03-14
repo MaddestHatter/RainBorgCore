@@ -472,9 +472,9 @@ namespace RainBorg
 
 			// Begin building status message
 			var statusBuilder = new EmbedBuilder();
-			statusBuilder.WithTitle("Hadoken !");
+			statusBuilder.WithTitle("Soon comes the cold, and the night that never ends !");
 			statusBuilder.ImageUrl = statusImages[r.Next(0, statusImages.Count)];
-			statusBuilder.Description = "Hooray, " + Format(tipTotal) + " " + currencyName + " just rained on " + userCount + " chatty user";
+			statusBuilder.Description = "Take Cover, " + Format(tipTotal) + " " + currencyName + " just fired on " + userCount + " chatty user";
 			
 			if (UserPools[ChannelId].Count > 1) statusBuilder.Description += "s";
 			{

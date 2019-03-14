@@ -1,0 +1,57 @@
+{
+  "currencyName": "DRGL",
+  "decimalPlaces": 7,
+  "databaseFile": "Stats.db",
+  "databaseFileTipBot": "users.db",
+  "localTipBot": true,
+  "tipBotId": 544662853898993665,
+  "daemonHost": "zirtysperzys.online",
+  "daemonPort": 18180,
+  "daemonPassword": "",
+  "botAddress": "BotAddress",
+  "botPaymentId": "PaymentID",
+  "entranceMessage": "Fire and Ice!",
+  "successReact": "kthx",
+  "tipFee": 0.08,
+  "tipMin": 0.5,
+  "tipMax": 5.0,
+  "userMin": 2,
+  "userMax": 67,
+  "waitMin": 1200,
+  "waitMax": 2400,
+  "megaTipAmount": 1.0,
+  "megaTipChance": 0.0,
+  "accountAge": 12,
+  "timeoutPeriod": 2400,
+  "flushPools": true,
+  "developerDonations": false,
+  "logLevel": 5,
+  "logFile": "rainborg.log",
+  "botToken": "",
+  "botPrefix": "..",
+  "tipPrefix": ".",
+  "spamWarning": "You've been issued a spam warning, this means you won't be included in my next tip. Try to be a better Knight, okay? ;) ",
+  "channelWeight": [
+    461464270786527234,
+    474353113692766241,
+    479562868308574208,
+    541041248887242780,
+    479562375515602945,
+    548055316756168714,
+    483913545893806080,
+    483913545893806080,
+    483913545893806080
+  ],
+  "statusChannel": [
+    508287025447960576
+  ],
+  "wordFilter": [],
+  "requiredRoles": [],
+  "ignoredNicknames": [],
+  "statusImages": [
+    "https://i.imgur.com/9DOYegc.jpg"
+  ],
+  "donationImages": [
+    "https://i.imgur.com/MUffrEU.png"
+  ]
+}
